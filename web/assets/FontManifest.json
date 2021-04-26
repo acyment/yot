@@ -1,0 +1,10 @@
+[
+    {
+        "family": "Roboto",
+        "fonts": [
+            {
+                "asset" : "roboto-black-webfont.ttf"
+            }
+        ]
+    }
+]
