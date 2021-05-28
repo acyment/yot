@@ -1,13 +1,15 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/index.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class TimerLayout extends StatefulWidget {
-  CurrentRemainingTime? time;
+  Duration? remainingTime;
+  Key? onFinishAnimationKey;
 
-  TimerLayout(CurrentRemainingTime? time) {
-    this.time = time;
+  TimerLayout(
+      {required Duration time,
+      required GlobalKey<AnimatorWidgetState> onFinishAnimationKey}) {
+    this.remainingTime = time;
+    this.onFinishAnimationKey = onFinishAnimationKey;
   }
 
   @override
@@ -15,24 +17,30 @@ class TimerLayout extends StatefulWidget {
 }
 
 class _TimerLayoutState extends State<TimerLayout> {
-  CurrentRemainingTime? time;
-
   @override
   Widget build(BuildContext context) {
     Widget digitsLayout;
-    if ((widget.time?.min ?? 0) >= 1)
+    if ((widget.remainingTime?.inMinutes ?? 0) >= 1)
       digitsLayout = Stack(children: [
         Align(
-            alignment: Alignment.bottomCenter,
-            child: MainDigit(widget.time?.min)),
+          alignment: Alignment.bottomCenter,
+          child: MainDigit(widget.remainingTime?.inMinutes),
+        ),
         Align(
             alignment: Alignment.bottomRight,
-            child: SmallDigit(widget.time?.sec))
+            child: SmallDigit(widget.remainingTime?.inSeconds
+                .remainder(Duration.secondsPerMinute)))
       ]);
     else
       digitsLayout = Align(
-          alignment: Alignment.bottomCenter,
-          child: MainDigit(widget.time?.sec));
+        alignment: Alignment.bottomCenter,
+        child: RubberBand(
+          key: widget.onFinishAnimationKey,
+          preferences: AnimationPreferences(autoPlay: AnimationPlayStates.None),
+          child: MainDigit(widget.remainingTime?.inSeconds
+              .remainder(Duration.secondsPerMinute)),
+        ),
+      );
 
     return Scaffold(
       backgroundColor: Colors.red,

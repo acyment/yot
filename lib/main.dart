@@ -8,7 +8,7 @@ class TimerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Yet Another Timer',
-      home: TimerWidget(),
+      home: TimerWidget(initialDuration: Duration(seconds: 3)),
     );
   }
 }
