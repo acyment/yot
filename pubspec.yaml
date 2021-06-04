@@ -33,6 +33,9 @@ dependencies:
   fsm2: ^2.0.4
   flutter_animator:
     path: ../animator
+  simple_gesture_detector: ^0.2.0
+  swipe_gesture_recognizer:
+    path: ../FlutterSwipeGestureRecognizer
   
 
 dev_dependencies:
@@ -43,6 +46,7 @@ dev_dependencies:
     sdk: flutter
   flutter_driver:
     sdk: flutter
+
   
   
 

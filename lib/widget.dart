@@ -5,7 +5,7 @@ import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
 class TimerWidget extends StatefulWidget {
-  final Duration initialDuration;
+  Duration initialDuration;
 
   TimerWidget({required Duration initialDuration})
       : initialDuration = initialDuration;
@@ -33,6 +33,22 @@ class _TimerWidgetState extends State<TimerWidget> {
     _stateMachine = fsm.StateMachine.create((g) => g
       ..initialState<Stopped>()
       ..state<Stopped>((b) => b
+        ..on<OnMoreMinutes, Stopped>(sideEffect: (e) async {
+          widget.initialDuration += Duration(minutes: 1);
+          _countdownController.value = widget.initialDuration.inMilliseconds;
+        })
+        ..on<OnMoreSeconds, Stopped>(sideEffect: (e) async {
+          widget.initialDuration += Duration(seconds: 15);
+          _countdownController.value = widget.initialDuration.inMilliseconds;
+        })
+        ..on<OnLessMinutes, Stopped>(sideEffect: (e) async {
+          widget.initialDuration -= Duration(minutes: 1);
+          _countdownController.value = widget.initialDuration.inMilliseconds;
+        })
+        ..on<OnLessSeconds, Stopped>(sideEffect: (e) async {
+          widget.initialDuration -= Duration(seconds: 15);
+          _countdownController.value = widget.initialDuration.inMilliseconds;
+        })
         ..on<OnDoubleTap, Ticking>(
             sideEffect: (e) async => _countdownController.start()))
       ..state<Ticking>((b) => b
@@ -71,7 +87,10 @@ class _TimerWidgetState extends State<TimerWidget> {
             countdownController: _countdownController,
             builder: (_, Duration time) {
               return TimerLayout(
-                  time: time, onFinishAnimationKey: this._onFinishAnimation);
+                time: time,
+                onFinishAnimationKey: this._onFinishAnimation,
+                stateMachine: this._stateMachine,
+              );
             }));
   }
 }

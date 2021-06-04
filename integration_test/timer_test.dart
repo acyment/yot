@@ -9,7 +9,7 @@ void main() {
 
   testWidgets("failing test example", (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(TimerApp());
+    await tester.pumpWidget(TimerApp(Duration(seconds: 3)));
 
     // Verify that our counter starts at 0.
     expect(find.text('3'), findsOneWidget);
@@ -26,8 +26,6 @@ void main() {
     await tester.pump(Duration(seconds: 5));
 
     expect(find.text('1'), findsOneWidget);
-    //  expect(find.text('1'), findsOneWidget);
-    //Countdown c = tester.widget<Countdown>(find.byType(Countdown));
   });
 }
 

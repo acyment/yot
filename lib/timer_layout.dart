@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:fsm2/fsm2.dart' as fsm;
+import 'package:swipe_gesture_recognizer/swipe_gesture_recognizer.dart';
+import 'package:yot_flutter/widget.dart';
 
 class TimerLayout extends StatefulWidget {
-  Duration? remainingTime;
-  Key? onFinishAnimationKey;
+  final Duration? remainingTime;
+  final Key onFinishAnimationKey;
+  final fsm.StateMachine stateMachine;
 
   TimerLayout(
       {required Duration time,
-      required GlobalKey<AnimatorWidgetState> onFinishAnimationKey}) {
-    this.remainingTime = time;
-    this.onFinishAnimationKey = onFinishAnimationKey;
-  }
+      required GlobalKey<AnimatorWidgetState> onFinishAnimationKey,
+      required fsm.StateMachine stateMachine})
+      : this.remainingTime = time,
+        this.onFinishAnimationKey = onFinishAnimationKey,
+        this.stateMachine = stateMachine;
 
   @override
   _TimerLayoutState createState() => _TimerLayoutState();
@@ -24,22 +29,44 @@ class _TimerLayoutState extends State<TimerLayout> {
       digitsLayout = Stack(children: [
         Align(
           alignment: Alignment.bottomCenter,
-          child: MainDigit(widget.remainingTime?.inMinutes),
+          child: SwipeGestureRecognizer(
+              onSwipeUp: () {
+                widget.stateMachine.applyEvent(OnMoreMinutes());
+              },
+              onSwipeDown: () {
+                widget.stateMachine.applyEvent(OnLessMinutes());
+              },
+              child: MainDigit(widget.remainingTime?.inMinutes)),
         ),
         Align(
             alignment: Alignment.bottomRight,
-            child: SmallDigit(widget.remainingTime?.inSeconds
-                .remainder(Duration.secondsPerMinute)))
+            child: SwipeGestureRecognizer(
+                onSwipeUp: () {
+                  widget.stateMachine.applyEvent(OnMoreSeconds());
+                },
+                onSwipeDown: () {
+                  widget.stateMachine.applyEvent(OnLessSeconds());
+                },
+                child: SmallDigit(widget.remainingTime?.inSeconds
+                    .remainder(Duration.secondsPerMinute))))
       ]);
     else
       digitsLayout = Align(
         alignment: Alignment.bottomCenter,
         child: RubberBand(
-          key: widget.onFinishAnimationKey,
-          preferences: AnimationPreferences(autoPlay: AnimationPlayStates.None),
-          child: MainDigit(widget.remainingTime?.inSeconds
-              .remainder(Duration.secondsPerMinute)),
-        ),
+            key: widget.onFinishAnimationKey,
+            preferences:
+                AnimationPreferences(autoPlay: AnimationPlayStates.None),
+            child: SwipeGestureRecognizer(
+              onSwipeUp: () {
+                widget.stateMachine.applyEvent(OnMoreSeconds());
+              },
+              onSwipeDown: () {
+                widget.stateMachine.applyEvent(OnLessSeconds());
+              },
+              child: MainDigit(widget.remainingTime?.inSeconds
+                  .remainder(Duration.secondsPerMinute)),
+            )),
       );
 
     return Scaffold(
