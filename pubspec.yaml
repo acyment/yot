@@ -21,8 +21,7 @@ environment:
   sdk: '>=2.12.0-259.8.beta <3.0.0'
 
 dependencies:
-  flutter_countdown_timer: 
-    path: ../FlutterCountdownTimer
+  flutter_countdown_timer: ^4.1.0
   flutter:
     sdk: flutter
 
@@ -32,10 +31,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   fsm2: ^2.0.4
   flutter_animator:
-    path: ../animator
+    git: https://github.com/sharp3dges/animator.git
   simple_gesture_detector: ^0.2.0
   swipe_gesture_recognizer:
-    path: ../FlutterSwipeGestureRecognizer
+    git: https://github.com/acyment/FlutterSwipeGestureRecognizer.git
   
 
 dev_dependencies:

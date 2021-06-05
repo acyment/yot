@@ -240,16 +240,18 @@ packages:
   flutter_animator:
     dependency: "direct main"
     description:
-      path: "../animator"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: cb32b0e3f445d849b1794979b37da5db964cfd64
+      url: "https://github.com/sharp3dges/animator.git"
+    source: git
     version: "3.1.1"
   flutter_countdown_timer:
     dependency: "direct main"
     description:
-      path: "../FlutterCountdownTimer"
-      relative: true
-    source: path
+      name: flutter_countdown_timer
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "4.1.0"
   flutter_driver:
     dependency: "direct dev"
@@ -531,9 +533,11 @@ packages:
   swipe_gesture_recognizer:
     dependency: "direct main"
     description:
-      path: "../FlutterSwipeGestureRecognizer"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "52f45323e904d9bc809f8200b784eac14cf1ff34"
+      url: "https://github.com/acyment/FlutterSwipeGestureRecognizer.git"
+    source: git
     version: "0.0.2"
   sync_http:
     dependency: transitive
