@@ -41,14 +41,20 @@ class _TimerWidgetState extends State<TimerWidget> {
           widget.initialDuration += Duration(seconds: 15);
           _countdownController.value = widget.initialDuration.inMilliseconds;
         })
-        ..on<OnLessMinutes, Stopped>(sideEffect: (e) async {
-          widget.initialDuration -= Duration(minutes: 1);
-          _countdownController.value = widget.initialDuration.inMilliseconds;
-        })
-        ..on<OnLessSeconds, Stopped>(sideEffect: (e) async {
-          widget.initialDuration -= Duration(seconds: 15);
-          _countdownController.value = widget.initialDuration.inMilliseconds;
-        })
+        ..on<OnLessMinutes, Stopped>(
+            condition: (e) => widget.initialDuration > Duration(minutes: 1),
+            sideEffect: (e) async {
+              widget.initialDuration -= Duration(minutes: 1);
+              _countdownController.value =
+                  widget.initialDuration.inMilliseconds;
+            })
+        ..on<OnLessSeconds, Stopped>(
+            condition: (e) => widget.initialDuration > Duration(seconds: 15),
+            sideEffect: (e) async {
+              widget.initialDuration -= Duration(seconds: 15);
+              _countdownController.value =
+                  widget.initialDuration.inMilliseconds;
+            })
         ..on<OnDoubleTap, Ticking>(
             sideEffect: (e) async => _countdownController.start()))
       ..state<Ticking>((b) => b
